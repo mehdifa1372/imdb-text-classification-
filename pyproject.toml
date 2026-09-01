@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imdb-transformer-sentiment"
+version = "0.1.0"
+description = "Reproducible transformer fine-tuning and inference on IMDb reviews"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "accelerate>=0.28,<2",
+  "datasets>=2.18,<5",
+  "numpy>=1.26,<3",
+  "scikit-learn>=1.4,<2",
+  "torch>=2.2,<3",
+  "transformers>=4.40,<6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.6,<1"]
+
+[project.scripts]
+imdb-sentiment = "imdb_sentiment.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
