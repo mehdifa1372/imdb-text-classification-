@@ -114,7 +114,7 @@ class SentimentAnalyzer:
             per_device_eval_batch_size=batch_size,
             num_train_epochs=epochs,
             weight_decay=0.01,
-            eval_strategy="epoch",
+            evaluation_strategy="epoch",
             save_strategy="epoch",
             load_best_model_at_end=True,
             metric_for_best_model="f1",
@@ -139,7 +139,11 @@ class SentimentAnalyzer:
         trainer.save_model(str(final_path))
         self.tokenizer.save_pretrained(str(final_path))
         self.model_path = final_path
-        return {key: float(value) for key, value in test_metrics.items() if isinstance(value, (int, float))}
+        return {
+            key: float(value)
+            for key, value in test_metrics.items()
+            if isinstance(value, (int, float))
+        }
 
     def load_model(self, model_path: str | Path | None = None) -> None:
         path = Path(model_path) if model_path else self.model_path
@@ -166,4 +170,3 @@ class SentimentAnalyzer:
         with torch.inference_mode():
             prediction = int(self.model(**inputs).logits.argmax(dim=-1).item())
         return "Positive" if prediction == 1 else "Negative"
-
